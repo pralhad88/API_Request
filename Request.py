@@ -39,7 +39,6 @@ def details_of_cource():
                 print('')
                 req = requests.get("http://saral.navgurukul.org/api/courses/"+str(j["id"])+"/exercises").text
                 dic = json.loads(req)
-                
                 while True:
                     k = 0
                     for i in dic['data']:
@@ -60,7 +59,31 @@ def details_of_cource():
                             print("")
                             print(data_type["content"].strip('\n'))
                             print('-------------------------------------------------')
-                    
+                            if len(p["childExercises"]) != 0:
+                                while True:
+                                    k = 0
+                                    for i in p["childExercises"]:
+                                        k+=1
+                                        print(k ,i["name"])
+                                    
+                                    n = int(input("Enter topic number that's you want to learn:- "))
+                                    print("")
+                                    
+                                    s = 0
+                                    for a in p["childExercises"]:
+                                        s+=1
+                                        if n == s:
+                                            cource_data = requests.get("http://saral.navgurukul.org/api/courses/"+ str(j["id"]) + "/exercise/getBySlug?slug=" + a["slug"]).text
+                                            data_type = json.loads(cource_data)
+                                            print("Topic name:- " + data_type['name'])
+                                            print("")
+                                            print(data_type["content"].strip('\n'))
+                                            print('-------------------------------------------------')
+                                    
+                                    user = input("If you want to learn another topic then press any key or type exit:- ")
+                                    if user == "exit":
+                                        break        
+                
                     user = input ("If you want to learn next topic then press any key or type 'exit' to leave the cource:- ")
                     
                     if user == 'exit':
@@ -75,3 +98,4 @@ def details_of_cource():
             break
 
 details_of_cource()
+
